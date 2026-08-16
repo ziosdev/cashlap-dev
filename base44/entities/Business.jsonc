@@ -1,0 +1,93 @@
+{
+  "name": "Business",
+  "type": "object",
+  "properties": {
+    "business_owner_id": {
+      "type": "string",
+      "description": "ID of the user who owns the business"
+    },
+    "name": {
+      "type": "string",
+      "description": "Business name"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "restaurant",
+        "cafe",
+        "retail",
+        "fitness",
+        "beauty",
+        "entertainment",
+        "services",
+        "health"
+      ],
+      "description": "Business category"
+    },
+    "address": {
+      "type": "string",
+      "description": "Business address"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Business latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Business longitude"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Business image URL"
+    },
+    "description": {
+      "type": "string",
+      "description": "Business description"
+    },
+    "reward_amount": {
+      "type": "number",
+      "description": "Default reward amount for visiting (can be overridden by campaigns)"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Business phone number"
+    },
+    "website": {
+      "type": "string",
+      "description": "Business website"
+    },
+    "hours": {
+      "type": "string",
+      "description": "Business hours"
+    },
+    "rating": {
+      "type": "number",
+      "description": "Average rating (1-5)"
+    },
+    "total_visits": {
+      "type": "number",
+      "default": 0,
+      "description": "Total visits through platform"
+    }
+  },
+  "required": [
+    "name",
+    "business_owner_id",
+    "address"
+  ],
+  "rls": {
+    "read": {},
+    "write": {
+      "$or": [
+        {
+          "business_owner_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

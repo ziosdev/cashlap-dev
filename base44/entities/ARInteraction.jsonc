@@ -1,0 +1,91 @@
+{
+  "name": "ARInteraction",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "ID of the user who had the AR interaction"
+    },
+    "campaign_id": {
+      "type": "string",
+      "description": "Optional: ID of campaign if AR interaction is tied to a campaign"
+    },
+    "business_id": {
+      "type": "string",
+      "description": "Optional: ID of business if interaction is near a business location"
+    },
+    "interaction_type": {
+      "type": "string",
+      "enum": [
+        "cashie_tap",
+        "cashie_collect",
+        "location_discover",
+        "ar_mission"
+      ],
+      "description": "Type of AR interaction"
+    },
+    "location_latitude": {
+      "type": "number",
+      "description": "Latitude where AR interaction occurred"
+    },
+    "location_longitude": {
+      "type": "number",
+      "description": "Longitude where AR interaction occurred"
+    },
+    "reward_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "Reward amount earned from this interaction"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "expired"
+      ],
+      "default": "completed",
+      "description": "Status of the AR interaction"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional data about the interaction (distance to POI, time spent, etc.)",
+      "default": {}
+    }
+  },
+  "required": [
+    "user_id",
+    "interaction_type",
+    "location_latitude",
+    "location_longitude"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_id": "{{user.id}}"
+        },
+        {
+          "business_id": "{{user.business_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "write": {
+      "$or": [
+        {
+          "user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

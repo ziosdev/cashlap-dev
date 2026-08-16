@@ -1,0 +1,77 @@
+{
+  "name": "Transaction",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "ID of the user associated with the transaction"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Transaction amount. Negative for withdrawals/spends, positive for deposits/payouts."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "deposit",
+        "withdrawal",
+        "payout",
+        "spend"
+      ],
+      "description": "Type of transaction"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "failed"
+      ],
+      "default": "pending",
+      "description": "Status of the transaction"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the transaction"
+    },
+    "payment_method_details": {
+      "type": "string",
+      "description": "Summary of the payment method used, e.g., 'PayPal (user@example.com)'"
+    },
+    "related_entity_id": {
+      "type": "string",
+      "description": "ID of related entity (e.g., Mission or Campaign)"
+    }
+  },
+  "required": [
+    "user_id",
+    "amount",
+    "type"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "write": {
+      "$or": [
+        {
+          "user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

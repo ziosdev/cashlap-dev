@@ -1,0 +1,84 @@
+{
+  "name": "QRCode",
+  "type": "object",
+  "properties": {
+    "campaign_id": {
+      "type": "string",
+      "description": "ID of the campaign this QR code belongs to"
+    },
+    "business_id": {
+      "type": "string",
+      "description": "ID of the business that created this QR code"
+    },
+    "qr_code_data": {
+      "type": "string",
+      "description": "The unique data encoded in the QR code"
+    },
+    "location_name": {
+      "type": "string",
+      "description": "Descriptive name for this QR code location (e.g., 'Front Counter', 'Main Entrance')"
+    },
+    "location_address": {
+      "type": "string",
+      "description": "Address where this QR code is posted"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Latitude of QR code location"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude of QR code location"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive"
+      ],
+      "default": "active",
+      "description": "Whether this QR code is currently active"
+    },
+    "total_scans": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of times this QR code has been scanned"
+    },
+    "last_scanned": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this QR code was last scanned"
+    }
+  },
+  "required": [
+    "campaign_id",
+    "business_id",
+    "qr_code_data"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "business_id": "{{user.business_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "write": {
+      "$or": [
+        {
+          "business_id": "{{user.business_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

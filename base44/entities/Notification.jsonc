@@ -1,0 +1,86 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "ID of the user to notify"
+    },
+    "title": {
+      "type": "string",
+      "description": "Notification title"
+    },
+    "message": {
+      "type": "string",
+      "description": "Notification message"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "mission_completed",
+        "mission_approved",
+        "mission_rejected",
+        "reward_earned",
+        "level_up",
+        "payout_processed",
+        "referral_bonus",
+        "new_submission",
+        "campaign_milestone",
+        "low_budget",
+        "campaign_completed",
+        "engagement_report",
+        "optimization_suggestion",
+        "peak_hours_alert",
+        "welcome",
+        "general"
+      ],
+      "description": "Type of notification for icon/theming and categorization"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user has read the notification"
+    },
+    "link_url": {
+      "type": "string",
+      "description": "Optional URL to navigate to when clicked"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional data related to the notification (mission ID, campaign ID, amounts, etc.)",
+      "default": {}
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "urgent"
+      ],
+      "default": "medium",
+      "description": "Notification priority level"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional expiration date for time-sensitive notifications"
+    }
+  },
+  "required": [
+    "user_id",
+    "title",
+    "message",
+    "type"
+  ],
+  "rls": {
+    "read": {
+      "user_id": "{{user.id}}"
+    },
+    "write": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

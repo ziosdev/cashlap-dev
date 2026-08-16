@@ -1,0 +1,122 @@
+{
+  "name": "Campaign",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Campaign title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Campaign description"
+    },
+    "business_id": {
+      "type": "string",
+      "description": "ID of the business that created the campaign"
+    },
+    "reward_amount": {
+      "type": "number",
+      "description": "Reward for completing the campaign"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "completed",
+        "draft"
+      ],
+      "default": "draft",
+      "description": "Campaign status"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "address"
+        ]
+      }
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "restaurant",
+        "cafe",
+        "retail",
+        "fitness",
+        "beauty",
+        "entertainment",
+        "services",
+        "health"
+      ]
+    },
+    "max_participants": {
+      "type": "number"
+    },
+    "current_participants": {
+      "type": "number",
+      "default": 0
+    },
+    "budget": {
+      "type": "number"
+    },
+    "notifications_sent": {
+      "type": "object",
+      "description": "Flags to track sent notifications, e.g., {\"low_budget_warning\": true}"
+    },
+    "check_in_cooldown_hours": {
+      "type": "number",
+      "default": 24,
+      "description": "Minimum hours between check-ins for the same user"
+    }
+  },
+  "required": [
+    "title",
+    "business_id",
+    "reward_amount"
+  ],
+  "rls": {
+    "read": {},
+    "write": {
+      "$or": [
+        {
+          "business_id": "{{user.business_id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
